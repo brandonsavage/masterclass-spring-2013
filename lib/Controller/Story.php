@@ -1,8 +1,9 @@
 <?php
 
-class Story {
+class Controller_Story {
     
     public function __construct($config) {
+				$this->config = $config;
         $dbconfig = $config['database'];
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
@@ -94,8 +95,8 @@ class Story {
                 <input type="submit" name="create" value="Create" />
             </form>
         ';
-        
-        require_once 'layout.phtml';
+
+			require $this->config['views']['layout_path'] . '/layout.phtml';
     }
     
 }

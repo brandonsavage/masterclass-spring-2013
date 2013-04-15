@@ -1,10 +1,11 @@
 <?php
 
-class User {
+class Controller_User {
     
     public $db;
     
     public function __construct($config) {
+				$this->config = $config;
         $dbconfig = $config['database'];
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
@@ -69,7 +70,7 @@ class User {
             </form>
         ';
         
-        require_once 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
         
     }
     
@@ -149,7 +150,7 @@ class User {
             </form>
         ';
         
-        require_once('layout.phtml');
+        require_once( 'layout.phtml' );
         
     }
     
