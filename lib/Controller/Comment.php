@@ -1,8 +1,9 @@
 <?php
 
-class Comment {
+class Controller_Comment {
     
     public function __construct($config) {
+        $this->config = $config;
         $dbconfig = $config['database'];
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
