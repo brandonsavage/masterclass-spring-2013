@@ -1,13 +1,19 @@
 <?php
 
 class MasterController {
-    
-    private $config;
+    protected $config;
     
     public function __construct($config) {
         $this->_setupConfig($config);
+		spl_autoload_register(array($this, 'autoloader'));
     }
-    
+
+	public function autoloader($class) {
+		$className = str_replace('_', '/', $class);
+		$className = $className . '.php';
+		require_once $className;
+	}
+
     public function execute() {
         $call = $this->_determineControllers();
         $call_class = $call['call'];
