@@ -2,10 +2,13 @@
 
 class MasterController {
     
-    private $config;
+    protected $config;
     
     public function __construct($config) {
-        $this->_setupConfig($config);
+        $this->config = $config;
+
+        spl_autoload_register(array($this, 'autoloader'));
+        $this->_setupConfig($this->config);
     }
     
     public function execute() {
@@ -26,6 +29,7 @@ class MasterController {
         }
         
         $ruri = $_SERVER['REQUEST_URI'];
+       
         $path = str_replace($rb, '', $ruri);
         $return = array();
         
@@ -43,6 +47,14 @@ class MasterController {
         }
         
         return $return;
+    }
+
+    public function autoloader($class)
+    {
+        $className = 'Controller/Controller_' . $class;
+        //$className = str_replace('_', '/', $class);
+        $className = $className . '.php';
+        require_once $className;
     }
     
     private function _setupConfig($config) {
