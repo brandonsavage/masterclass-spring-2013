@@ -1,10 +1,16 @@
 <?php
+namespace Controller;
+use \PDO;
 
 class Index {
     
     protected $db;
+
+    private $config;
     
     public function __construct($config) {
+        $this->config = $config;
+
         $dbconfig = $config['database'];
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
@@ -36,6 +42,6 @@ class Index {
         
         $content .= '</ol>';
         
-        require 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
     }
 }
