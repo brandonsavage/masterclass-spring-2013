@@ -1,11 +1,15 @@
 <?php
 
-class Index {
+class Controller_Index {
     
     protected $db;
+    protected $config;
     
     public function __construct($config) {
-        $dbconfig = $config['database'];
+
+        $this->config = $config;
+        $dbconfig = $this->config['database'];
+
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -36,6 +40,6 @@ class Index {
         
         $content .= '</ol>';
         
-        require 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
     }
 }

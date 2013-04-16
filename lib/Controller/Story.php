@@ -1,12 +1,19 @@
 <?php
 
-class Story {
+class Controller_Story {
     
+    protected $config;
+    protected $db;
+
     public function __construct($config) {
-        $dbconfig = $config['database'];
+
+        $this->config = $config;
+        $dbconfig = $this->config['database'];
+
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        
     }
     
     public function index() {
@@ -55,7 +62,7 @@ class Story {
             ';
         }
         
-        require_once 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
         
     }
     
@@ -95,7 +102,7 @@ class Story {
             </form>
         ';
         
-        require_once 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
     }
     
 }

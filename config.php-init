@@ -8,15 +8,18 @@ return array(
         'host' => '',
         'name' => '',
     ),
-    
     'routes' => array(
         '' => 'index/index',
-        'story' => 'story/index',
-        'story/create' => 'story/create',
-        'comment/create' => 'comment/create',
-        'user/create' => 'user/create',
-        'user/account' => 'user/account',
-        'user/login' => 'user/login',
-        'user/logout' => 'user/logout',
+        'story' => 'Story/index',
+        'story/create' => 'Story/create',
+        'comment/create' => 'Comment/create',
+        'user/create' => 'User/create',
+        'user/account' => 'User/account',
+        'user/login' => 'User/login',
+        'user/logout' => 'User/logout',
+    ),
+    'views' => array(
+        'view_path' => '',
+        'layout_path' => realpath('../view/layouts')
     ),
 );

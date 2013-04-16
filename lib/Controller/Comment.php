@@ -1,9 +1,15 @@
 <?php
 
-class Comment {
+class Controller_Comment {
+
+    protected $config;
+    protected $db;
     
     public function __construct($config) {
-        $dbconfig = $config['database'];
+
+        $this->config = $config;
+        $dbconfig = $this->config['database'];
+
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
