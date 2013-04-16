@@ -11,7 +11,7 @@ return array(
     'routes' => array(
         '' => 'index/index',
         'story' => 'Story/index',
-        'story/create' => 'Sstory/create',
+        'story/create' => 'Story/create',
         'comment/create' => 'Comment/create',
         'user/create' => 'User/create',
         'user/account' => 'User/account',
