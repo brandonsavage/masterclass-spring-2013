@@ -1,6 +1,6 @@
 <?php
 
-class Comment {
+class Controller_Comment {
 
     protected $config;
     protected $db;

@@ -1,6 +1,6 @@
 <?php
 
-class Index {
+class Controller_Index {
     
     protected $db;
     protected $config;

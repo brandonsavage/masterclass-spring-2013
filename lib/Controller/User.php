@@ -1,6 +1,6 @@
 <?php
 
-class User {
+class Controller_User {
     
     protected $config;
     protected $db;

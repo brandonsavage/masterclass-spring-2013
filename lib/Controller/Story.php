@@ -1,6 +1,6 @@
 <?php
 
-class Story {
+class Controller_Story {
     
     protected $config;
     protected $db;
