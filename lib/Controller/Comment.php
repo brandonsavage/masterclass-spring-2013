@@ -1,8 +1,14 @@
 <?php
+namespace Controller;
+use \PDO;
 
 class Comment {
+
+    private $config;
     
     public function __construct($config) {
+        $this->config = $config;
+
         $dbconfig = $config['database'];
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);

@@ -1,10 +1,16 @@
 <?php
+namespace Controller;
+use \PDO;
 
 class User {
     
     public $db;
+
+    private $config;
     
     public function __construct($config) {
+        $this->config = $config;
+
         $dbconfig = $config['database'];
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
@@ -69,7 +75,7 @@ class User {
             </form>
         ';
         
-        require_once 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
         
     }
     
@@ -114,7 +120,7 @@ class User {
             <input type="submit" name="updatepw" value="Create User" />
         </form>';
         
-        require_once 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
     }
     
     public function login() {
@@ -149,7 +155,7 @@ class User {
             </form>
         ';
         
-        require_once('layout.phtml');
+        require $this->config['views']['layout_path'] . '/layout.phtml';
         
     }
     

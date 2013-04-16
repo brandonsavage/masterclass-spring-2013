@@ -5,13 +5,15 @@ class MasterController {
     private $config;
     
     public function __construct($config) {
+        spl_autoload_register(array($this, 'autoloader'));
         $this->_setupConfig($config);
     }
     
     public function execute() {
         $call = $this->_determineControllers();
         $call_class = $call['call'];
-        $class = ucfirst(array_shift($call_class));
+        $class = 'Controller\\' . ucfirst(array_shift($call_class));
+
         $method = array_shift($call_class);
         $o = new $class($this->config);
         return $o->$method();
@@ -47,6 +49,21 @@ class MasterController {
     
     private function _setupConfig($config) {
         $this->config = $config;
+    }
+
+    public function autoloader($className)
+    {
+        $className = ltrim($className, '\\');
+        $fileName  = '';
+        $namespace = '';
+        if ($lastNsPos = strripos($className, '\\')) {
+            $namespace = substr($className, 0, $lastNsPos);
+            $className = substr($className, $lastNsPos + 1);
+            $fileName  = str_replace('\\', DIRECTORY_SEPARATOR, $namespace) . DIRECTORY_SEPARATOR;
+        }
+        $fileName .= str_replace('_', DIRECTORY_SEPARATOR, $className) . '.php';
+
+        require $fileName;
     }
     
 }
