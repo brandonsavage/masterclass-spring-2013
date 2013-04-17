@@ -5,7 +5,6 @@ class MasterController {
     protected $config;
     
     public function __construct($config) {
-        $this->config = $config;
         $this->_setupConfig($config);
         spl_autoload_register(array($this, 'autoloader'));
     }
