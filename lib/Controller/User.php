@@ -2,12 +2,14 @@
 
 class Controller_User {
     
-    public $db;
     protected $config;
+    protected $user;
+    protected $session;
     
     public function __construct($config) {
         $this->config = $config;
         $this->user = new Model_User($this->config['database']);
+        $this->session = new Session_Base();
     }
     
     public function create() {
@@ -64,7 +66,7 @@ class Controller_User {
     
     public function account() {
         $error = null;
-        if(!isset($_SESSION['AUTHENTICATED'])) {
+        if(!$this->session->isAuthenticated()) {
             header("Location: /user/login");
             exit;
         }
@@ -103,10 +105,10 @@ class Controller_User {
         if(isset($_POST['login'])) {
             $auth = $this->user->authUser($_POST['user'], $_POST['pass']);
             if($auth['authenticated']) {
-               session_regenerate_id();
+               $this->session->regenerate();
                $user = $auth['user'];
-               $_SESSION['username'] = $user['username'];
-               $_SESSION['AUTHENTICATED'] = true;
+               $this->session->username = $user['username'];
+               $this->session->authenticate();
                header("Location: /");
                exit;
             }
@@ -130,7 +132,7 @@ class Controller_User {
     
     public function logout() {
         // Log out, redirect
-        session_destroy();
+        $this->session->destroy();
         header("Location: /");
     }
 }

@@ -2,12 +2,14 @@
 
 class Controller_Comment {
 
-    protected $comment;
     protected $config;
+    protected $comment;
+    protected $session;
     
     public function __construct($config) {
         $this->config = $config;
         $this->comment = new Model_Comment($this->config['database']);
+        $this->session = new Session_Base();
     }
     
     public function create() {

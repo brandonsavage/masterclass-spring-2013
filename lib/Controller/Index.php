@@ -2,13 +2,16 @@
 
 class Controller_Index {
     
-    protected $index;
     protected $config;
+    protected $story;
+    protected $comment;
+    protected $session;
     
     public function __construct($config) {
         $this->config = $config;
         $this->story = new Model_Story($this->config['database']);
         $this->comment = new Model_Comment($this->config['database']);
+        $this->session = new Session_Base();
     }
     
     public function index() {
