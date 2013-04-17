@@ -10,3 +10,4 @@ $config = require_once('../config/config.php');
 
 $framework = new MasterController($config);
 echo $framework->execute();
+
