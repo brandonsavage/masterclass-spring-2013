@@ -6,6 +6,7 @@ class MasterController {
     
     public function __construct($config) {
         $this->_setupConfig($config);
+        spl_autoload_register(array($this, 'autoloader'));
     }
     
     public function execute() {
@@ -49,4 +50,9 @@ class MasterController {
         $this->config = $config;
     }
     
+    public function autoloader($class) {
+        $className = str_replace('_', '/', $class);
+        $className = $className . '.php';
+        require_once $className;
+}
 }

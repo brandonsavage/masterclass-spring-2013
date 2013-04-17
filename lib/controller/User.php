@@ -1,6 +1,6 @@
 <?php
 
-class User {
+class Controller_User {
     
     public $db;
     
@@ -9,6 +9,7 @@ class User {
         $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
         $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
         $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->config = $config;
     }
     
     public function create() {
@@ -69,7 +70,7 @@ class User {
             </form>
         ';
         
-        require_once 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
         
     }
     
@@ -114,7 +115,7 @@ class User {
             <input type="submit" name="updatepw" value="Create User" />
         </form>';
         
-        require_once 'layout.phtml';
+        require $this->config['views']['layout_path'] . '/layout.phtml';
     }
     
     public function login() {
@@ -149,7 +150,7 @@ class User {
             </form>
         ';
         
-        require_once('layout.phtml');
+        require $this->config['views']['layout_path'] . '/layout.phtml';
         
     }
     
