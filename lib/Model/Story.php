@@ -1,8 +1,6 @@
 <?php
 
-include_once('Model.php');
-
-class Model_Story extends Model {
+class Model_Story extends Model_Base {
 
     public function __construct($dbconfig)
     {
