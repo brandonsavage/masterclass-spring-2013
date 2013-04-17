@@ -56,15 +56,4 @@ class Model {
         return $result;
     }
     
-    /*
-    public function conn
-    
-    
-    functions
-    connect
-    query
-    disconnect
-    
-    */
-    
 }
