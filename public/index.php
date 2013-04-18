@@ -1,14 +1,15 @@
 <?php
 
-session_start();
+date_default_timezone_set('America/Los_Angeles');
 
-$config = require_once('../config.php');
-require_once '../MasterController.php';
+set_include_path(
+    get_include_path() . 
+    PATH_SEPARATOR . realpath('../lib') . 
+    PATH_SEPARATOR . realpath('../config')
+);
 
-require_once '../Comment.php';
-require_once '../User.php';
-require_once '../Story.php';
-require_once '../Index.php';
+$config = require_once('config.php');
+require_once('MasterController.php');
 
 $framework = new MasterController($config);
 echo $framework->execute();
