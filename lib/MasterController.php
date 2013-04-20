@@ -2,13 +2,19 @@
 
 class MasterController {
 
-    private $config;
+    protected $config;
+    protected $db;
+    protected $session;
 
-    public function __construct($config) {
+
+
+    public function __construct(array $config) {
 
         spl_autoload_register(array($this, 'autoloader'));
 
         $this->_setupConfig($config);
+        $this->_setupDb($config);
+        $this->_setupSession($config);
     }
 
     public function autoloader($class) {
@@ -23,7 +29,7 @@ class MasterController {
         $call_class = $call['call'];
         $class = "Controller_".ucfirst(array_shift($call_class));
         $method = array_shift($call_class);
-        $o = new $class($this->config);
+        $o = new $class($this->config,$this->db,$this->session);
         return $o->$method();
     }
 
@@ -55,8 +61,25 @@ class MasterController {
         return $return;
     }
 
-    private function _setupConfig($config) {
+    private function _setupConfig(array $config) {
         $this->config = $config;
+    }
+
+    private function _setupDb(array $config) {
+        switch ($config['database']['driver']) {
+            default: // defaults to mysql
+                $this->db=new Database_Mysql($config);
+                break;
+        }
+
+    }
+
+    private function _setupSession(array $config) {
+        switch ($config['session']['driver']) {
+            default: // defaults to PHP built in sessions
+                $this->session=new Session_Php();
+                break;
+        }
     }
 
 }
