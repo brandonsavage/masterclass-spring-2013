@@ -2,15 +2,14 @@
 
 class Controller_User {
     
-    protected $db;
 	protected $config;
+	protected $model;
+	protected $session;
     
     public function __construct($config) {
 		$this->config = $config;
-        $dbconfig = $config['database'];
-        $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
-        $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+		$this->model = new Model_User($config);
+		$this->session = Model_Session::getSession();
     }
     
     public function create() {
@@ -77,7 +76,7 @@ class Controller_User {
     
     public function account() {
         $error = null;
-        if(!isset($_SESSION['AUTHENTICATED'])) {
+        if (!$this->session->isAuthenticated()) {
             header("Location: /user/login");
             exit;
         }
@@ -88,21 +87,13 @@ class Controller_User {
                 $error = 'The password fields were blank or they did not match. Please try again.';       
             }
             else {
-                $sql = 'UPDATE user SET password = ? WHERE username = ?';
-                $stmt = $this->db->prepare($sql);
-                $stmt->execute(array(
-                   md5($_SESSION['username'] . $_POST['password']), // THIS IS NOT SECURE. 
-                   $_SESSION['username'],
-                ));
+				$this->model->changeUserPassword($this->session->username, $_POST['password']);
                 $error = 'Your password was changed.';
             }
         }
         
-        $dsql = 'SELECT * FROM user WHERE username = ?';
-        $stmt = $this->db->prepare($dsql);
-        $stmt->execute(array($_SESSION['username']));
-        $details = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+		$details = $this->model->getUser($this->session->username);
+
         $content = '
         ' . $error . '<br />
         
@@ -125,21 +116,17 @@ class Controller_User {
         if(isset($_POST['login'])) {
             $username = $_POST['user'];
             $password = $_POST['pass'];
-            $password = md5($username . $password); // THIS IS NOT SECURE. DO NOT USE IN PRODUCTION.
-            $sql = 'SELECT * FROM user WHERE username = ? AND password = ? LIMIT 1';
-            $stmt = $this->db->prepare($sql);
-            $stmt->execute(array($username, $password));
-            if($stmt->rowCount() > 0) {
-               $data = $stmt->fetch(PDO::FETCH_ASSOC); 
-               session_regenerate_id();
-               $_SESSION['username'] = $data['username'];
-               $_SESSION['AUTHENTICATED'] = true;
-               header("Location: /");
-               exit;
-            }
-            else {
-                $error = 'Your username/password did not match.';
-            }
+
+			$data = $this->model->authenticate($username, $password);
+			if ($data) {
+				session_regenerate_id();
+				$this->session->username = $data['username'];
+				$this->session->authenticate();
+				header('Location: /');
+				exit;
+			} else {
+				$error = 'Your username and password combination was incorrect.';
+			}
         }
         
         $content = '
@@ -157,7 +144,7 @@ class Controller_User {
     
     public function logout() {
         // Log out, redirect
-        session_destroy();
+		$this->session->destroy();
         header("Location: /");
     }
 }
