@@ -1,13 +1,6 @@
 <?php
 
-class Model_Story {
-	protected $config;
-	protected $db;
-    
-    public function __construct($config) {
-		$this->config = $config;
-		$this->db = new Model_Database_Mysql($config);
-    }
+class Model_Story extends Model_Base {
 
 	public function createStory(array $params = array()) {
 		$sql = 'INSERT INTO story (headline, url, created_by, created_on) VALUES (?,?,?,NOW())';

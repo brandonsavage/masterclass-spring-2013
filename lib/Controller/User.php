@@ -1,17 +1,13 @@
 <?php
 
-class Controller_User {
+class Controller_User extends Controller_Base {
     
-	protected $config;
-	protected $model;
-	protected $session;
+	protected $user;
     
-    public function __construct($config) {
-		$this->config = $config;
-		$this->model = new Model_User($config);
-		$this->session = Model_Session::getSession();
-    }
-    
+	protected function _loadModels() {
+		$this->user = new Model_User($this->config);
+	}
+
     public function create() {
         $error = null;
         
@@ -87,12 +83,12 @@ class Controller_User {
                 $error = 'The password fields were blank or they did not match. Please try again.';       
             }
             else {
-				$this->model->changeUserPassword($this->session->username, $_POST['password']);
+				$this->user->changeUserPassword($this->session->username, $_POST['password']);
                 $error = 'Your password was changed.';
             }
         }
         
-		$details = $this->model->getUser($this->session->username);
+		$details = $this->user->getUser($this->session->username);
 
         $content = '
         ' . $error . '<br />
@@ -117,7 +113,7 @@ class Controller_User {
             $username = $_POST['user'];
             $password = $_POST['pass'];
 
-			$data = $this->model->authenticate($username, $password);
+			$data = $this->user->authenticate($username, $password);
 			if ($data) {
 				session_regenerate_id();
 				$this->session->username = $data['username'];

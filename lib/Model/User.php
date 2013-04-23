@@ -1,14 +1,6 @@
 <?php
 
-class Model_User {
-    
-	protected $db;
-	protected $config;
-    
-    public function __construct($config) {
-		$this->config = $config;
-		$this->db = new Model_Database_Mysql($config);
-    }
+class Model_User extends Model_Base {
     
     public function createUser($username, $email, $password, $pass_confirm) {
         $error = null;
