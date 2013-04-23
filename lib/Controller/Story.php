@@ -1,17 +1,8 @@
 <?php
 
-class Controller_Story {
-	protected $config;
-	protected $session;
+class Controller_Story extends Controller_Base {
 	protected $story;
 	protected $comment;
-    
-    public function __construct($config) {
-		$this->config = $config;
-		$this->story = new Model_Story($config);
-		$this->comment = new Model_Comment($config);
-		$this->session = Model_Session::getSession();
-    }
     
     public function index() {
         if(!isset($_GET['id'])) {
@@ -95,4 +86,8 @@ class Controller_Story {
         require_once $this->config['views']['layout_path'] . 'layout.phtml';
     }
     
+	protected function _loadModels() {
+		$this->story = new Model_Story($this->config);
+		$this->comment = new Model_Comment($this->config);
+	}
 }

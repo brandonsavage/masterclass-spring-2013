@@ -2,10 +2,12 @@
 class MasterController {
     
     private $config;
+	protected $_session;
     
     public function __construct($config) {
         $this->_setupConfig($config);
 		spl_autoload_register(array($this, 'autoloader'));
+		$this->_configureSession();
     }
     
 	public function autoloader($class) {
@@ -18,7 +20,7 @@ class MasterController {
         $call_class = $call['call'];
         $class = 'Controller_' . ucfirst(array_shift($call_class));
         $method = array_shift($call_class);
-        $o = new $class($this->config);
+        $o = new $class($this->_session, $this->config);
         return $o->$method();
     }
     
@@ -50,6 +52,15 @@ class MasterController {
         return $return;
     }
     
+	protected function _configureSession() {
+		$config = $this->config;
+		$session_config = $config['session_config'];
+
+		$driver = $session_config['driver'];
+		$session_class = 'Model_Session_' . $driver;
+		$this->_session = new $session_class($session_config);
+	}
+
     private function _setupConfig($config) {
         $this->config = $config;
     }

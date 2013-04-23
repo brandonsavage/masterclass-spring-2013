@@ -1,32 +1,21 @@
 <?php
 
-class Controller_Index {
-    
-    protected $db;
-	protected $config;
-    
-    public function __construct($config) {
-		$this->config = $config;
-        $dbconfig = $config['database'];
-        $dsn = 'mysql:host=' . $dbconfig['host'] . ';dbname=' . $dbconfig['name'];
-        $this->db = new PDO($dsn, $dbconfig['user'], $dbconfig['pass']);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    }
-    
+class Controller_Index extends Controller_Base {
+    protected $story;
+	protected $comment;
+
+	protected function _loadModels() {
+		$this->story = new Model_Story($this->config);
+		$this->comment = new Model_Comment($this->config);
+	}
+
     public function index() {
-        
-        $sql = 'SELECT * FROM story ORDER BY created_on DESC';
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-        $stories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $stories = $this->story->listStories();
         
         $content = '<ol>';
         
         foreach($stories as $story) {
-            $comment_sql = 'SELECT COUNT(*) as `count` FROM comment WHERE story_id = ?';
-            $comment_stmt = $this->db->prepare($comment_sql);
-            $comment_stmt->execute(array($story['id']));
-            $count = $comment_stmt->fetch(PDO::FETCH_ASSOC);
+            $count = $this->comment->getCommentCountForStory($story['id']);
             $content .= '
                 <li>
                 <a class="headline" href="' . $story['url'] . '">' . $story['headline'] . '</a><br />

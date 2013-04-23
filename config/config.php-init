@@ -23,5 +23,9 @@ return array(
 	'views' => array(
 		'view_path'	=> '',
 		'layout_path' => realpath('../view/layouts/') . '/',
-	)
+	),
+
+	'session_config' => array(
+		'driver' => 'Default',
+	),
 );

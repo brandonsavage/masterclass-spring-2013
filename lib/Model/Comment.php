@@ -1,13 +1,6 @@
 <?php
 
-class Model_Comment {
-	protected $config;
-	protected $db;
-    
-    public function __construct($config) {
-		$this->config = $config;
-		$this->db = new Model_Database_Mysql($config);
-    }
+class Model_Comment extends Model_Base {
     
 	public function getCommentCountForStory($story_id) {
 		$sql = 'SELECT COUNT(*) as `count` FROM comment WHERE story_id = ?';
