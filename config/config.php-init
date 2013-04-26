@@ -19,4 +19,13 @@ return array(
         'user/login' => 'user/login',
         'user/logout' => 'user/logout',
     ),
+
+	'views' => array(
+		'view_path'	=> '',
+		'layout_path' => realpath('../view/layouts/') . '/',
+	),
+
+	'session_config' => array(
+		'driver' => 'Default',
+	),
 );
