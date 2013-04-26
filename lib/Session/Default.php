@@ -1,14 +1,10 @@
 <?php
-class Model_Session {
-	public static $session;
+class Session_Default implements Session_Interface {
+	protected $_config;
 
-	public static function getSession() {
-		return self::$session;
-	}
-
-	public function __construct() {
+	public function __construct(array $session_config = array()) {
+		$this->_config = $session_config;
 		session_start();
-		self::$session = $this;
 	}
 
 	public function __get($name) {
@@ -38,6 +34,5 @@ class Model_Session {
 	public function destroy() {
 		unset($_SESSION);
 		session_destroy();
-		self::$session = null;
 	}
 }

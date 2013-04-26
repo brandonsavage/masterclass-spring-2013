@@ -57,7 +57,7 @@ class MasterController {
 		$session_config = $config['session_config'];
 
 		$driver = $session_config['driver'];
-		$session_class = 'Model_Session_' . $driver;
+		$session_class = 'Session_' . $driver;
 		$this->_session = new $session_class($session_config);
 	}
 

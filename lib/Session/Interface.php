@@ -1,6 +1,5 @@
 <?php
-
-interface Model_Session_Interface {
+interface Session_Interface {
 	public function __construct(array $session_config = array());
 
 	public function authenticate();

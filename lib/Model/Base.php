@@ -5,6 +5,6 @@ class Model_Base {
 
 	public function __construct($config) {
 		$this->config = $config;
-		$this->db = new Model_Database_Mysql($config);
+		$this->db = new Database_Mysql($config);
 	}
 }

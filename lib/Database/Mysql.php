@@ -1,5 +1,5 @@
 <?php
-class Model_Database_Mysql {
+class Database_Mysql {
 	protected $config;
 	protected $db;
 	protected $last_query;
